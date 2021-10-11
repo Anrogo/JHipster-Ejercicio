@@ -1,0 +1,69 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-pelicula-heading">Create or edit a Pelicula</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_titulo">Titulo</label>
+                    <input type="text" class="form-control" name="titulo" id="field_titulo"
+                           formControlName="titulo"/>
+                    <div *ngIf="editForm.get('titulo').invalid && (editForm.get('titulo').dirty || editForm.get('titulo').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('titulo').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('titulo').errors.minlength">
+                        This field is required to be at least 4 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('titulo').errors.maxlength">
+                        This field cannot be longer than 50 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_fechaEstreno">Fecha Estreno</label>
+                    <div class="d-flex">
+                        <input id="field_fechaEstreno" type="datetime-local" class="form-control" name="fechaEstreno" formControlName="fechaEstreno" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_descricion">Descricion</label>
+                    <input type="text" class="form-control" name="descricion" id="field_descricion"
+                           formControlName="descricion"/>
+                    <div *ngIf="editForm.get('descricion').invalid && (editForm.get('descricion').dirty || editForm.get('descricion').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('descricion').errors.minlength">
+                        This field is required to be at least 20 characters.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('descricion').errors.maxlength">
+                        This field cannot be longer than 500 characters.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_enCines">En Cines</label>
+                    <input type="checkbox" class="form-control" name="enCines" id="field_enCines"
+                           formControlName="enCines"/>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
