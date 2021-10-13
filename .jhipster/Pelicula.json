@@ -1,7 +1,30 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "estreno",
+            "otherEntityName": "estreno",
+            "relationshipType": "one-to-one",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "pelicula"
+        },
+        {
+            "relationshipName": "director",
+            "otherEntityName": "director",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "nombre",
+            "otherEntityRelationshipName": "pelicula"
+        },
+        {
+            "relationshipName": "actor",
+            "otherEntityName": "actor",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "nombre",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "pelicula"
+        }
+    ],
     "fields": [
         {
             "fieldName": "titulo",

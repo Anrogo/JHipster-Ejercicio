@@ -31,6 +31,13 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_pelicula">Pelicula</label>
+                    <select class="form-control" id="field_pelicula" name="pelicula" formControlName="pelicula">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="peliculaOption.id === editForm.get('pelicula').value?.id ? editForm.get('pelicula').value : peliculaOption" *ngFor="let peliculaOption of peliculas; trackBy: trackPeliculaById">{{peliculaOption.titulo}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

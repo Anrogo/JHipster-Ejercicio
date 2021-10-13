@@ -5,8 +5,9 @@
         {
             "relationshipName": "pelicula",
             "otherEntityName": "pelicula",
-            "relationshipType": "one-to-many",
-            "otherEntityRelationshipName": "director"
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "actor"
         }
     ],
     "fields": [
@@ -14,12 +15,11 @@
             "fieldName": "nombre",
             "fieldType": "String",
             "fieldValidateRules": [
-                "required",
                 "minlength",
                 "maxlength"
             ],
             "fieldValidateRulesMinlength": "3",
-            "fieldValidateRulesMaxlength": "50"
+            "fieldValidateRulesMaxlength": "40"
         },
         {
             "fieldName": "apellidos",
@@ -32,12 +32,12 @@
             "fieldValidateRulesMaxlength": "70"
         }
     ],
-    "changelogDate": "20211012154236",
+    "changelogDate": "20211013124745",
     "dto": "no",
     "searchEngine": "elasticsearch",
-    "service": "no",
-    "entityTableName": "director",
+    "service": "serviceClass",
+    "entityTableName": "actor",
     "databaseType": "sql",
-    "jpaMetamodelFiltering": false,
-    "pagination": "pagination"
+    "jpaMetamodelFiltering": true,
+    "pagination": "no"
 }

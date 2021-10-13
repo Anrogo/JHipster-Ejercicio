@@ -21,6 +21,18 @@
                 <dd>
                     <span>{{pelicula.enCines}}</span>
                 </dd>
+                <dt><span>Director</span></dt>
+                <dd>
+                    <div *ngIf="pelicula.director">
+                        <a [routerLink]="['/director', pelicula.director?.id, 'view']">{{pelicula.director?.nombre}}</a>
+                    </div>
+                </dd>
+                <dt><span>Actor</span></dt>
+                <dd>
+                    <span *ngFor="let actor of pelicula.actors; let last = last">
+                        <a [routerLink]="['/actor', actor?.id, 'view' ]">{{actor.nombre}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
             </dl>
 
             <button type="submit"

@@ -1,7 +1,17 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "pelicula",
+            "otherEntityName": "pelicula",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "titulo",
+            "ownerSide": true,
+            "useJPADerivedIdentifier": false,
+            "otherEntityRelationshipName": "estreno"
+        }
+    ],
     "fields": [
         {
             "fieldName": "fecha",

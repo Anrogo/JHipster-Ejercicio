@@ -1,10 +1,10 @@
 <div>
     <h2 id="page-heading">
-        <span>Estrenos</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-estreno" [routerLink]="['/estreno/new']">
+        <span>Actors</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-actor" [routerLink]="['/actor/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down" >
-            Create a new Estreno
+            Create a new Actor
             </span>
         </button>
     </h2>
@@ -25,46 +25,40 @@
         </div>
     </div>
     <br/>
-    <div class="alert alert-warning" *ngIf="estrenos?.length === 0">
-        <span>No estrenos found</span>
+    <div class="alert alert-warning" *ngIf="actors?.length === 0">
+        <span>No actors found</span>
     </div>
-    <div class="table-responsive" *ngIf="estrenos?.length > 0">
+    <div class="table-responsive" *ngIf="actors?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="fecha"><span>Fecha</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="lugar"><span>Lugar</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="pelicula.titulo"><span>Pelicula</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Nombre</span></th>
+            <th><span>Apellidos</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let estreno of estrenos ;trackBy: trackId">
-                <td><a [routerLink]="['/estreno', estreno.id, 'view' ]">{{estreno.id}}</a></td>
-                <td>{{estreno.fecha | date:'medium'}}</td>
-                <td>{{estreno.lugar}}</td>
-                <td>
-                    <div *ngIf="estreno.pelicula">
-                        <a [routerLink]="['/pelicula', estreno.pelicula?.id, 'view' ]" >{{estreno.pelicula?.titulo}}</a>
-                    </div>
-                </td>
+            <tr *ngFor="let actor of actors ;trackBy: trackId">
+                <td><a [routerLink]="['/actor', actor.id, 'view' ]">{{actor.id}}</a></td>
+                <td>{{actor.nombre}}</td>
+                <td>{{actor.apellidos}}</td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
-                                [routerLink]="['/estreno', estreno.id, 'view' ]"
+                                [routerLink]="['/actor', actor.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/estreno', estreno.id, 'edit']"
+                                [routerLink]="['/actor', actor.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/estreno', { outlets: { popup: estreno.id + '/delete'} }]"
+                                [routerLink]="['/actor', { outlets: { popup: actor.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
@@ -76,13 +70,5 @@
             </tr>
             </tbody>
         </table>
-    </div>
-    <div [hidden]="estrenos?.length === 0">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
-        </div>
     </div>
 </div>

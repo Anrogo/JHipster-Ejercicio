@@ -2,6 +2,9 @@ package es.curso.myproject.web.rest;
 
 import es.curso.myproject.MyprojectApp;
 import es.curso.myproject.domain.Pelicula;
+import es.curso.myproject.domain.Estreno;
+import es.curso.myproject.domain.Director;
+import es.curso.myproject.domain.Actor;
 import es.curso.myproject.repository.PeliculaRepository;
 import es.curso.myproject.repository.search.PeliculaSearchRepository;
 import es.curso.myproject.service.PeliculaService;
@@ -11,6 +14,7 @@ import es.curso.myproject.service.PeliculaQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +31,7 @@ import org.springframework.validation.Validator;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,6 +64,12 @@ public class PeliculaResourceIT {
 
     @Autowired
     private PeliculaRepository peliculaRepository;
+
+    @Mock
+    private PeliculaRepository peliculaRepositoryMock;
+
+    @Mock
+    private PeliculaService peliculaServiceMock;
 
     @Autowired
     private PeliculaService peliculaService;
@@ -221,6 +232,39 @@ public class PeliculaResourceIT {
             .andExpect(jsonPath("$.[*].enCines").value(hasItem(DEFAULT_EN_CINES.booleanValue())));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllPeliculasWithEagerRelationshipsIsEnabled() throws Exception {
+        PeliculaResource peliculaResource = new PeliculaResource(peliculaServiceMock, peliculaQueryService);
+        when(peliculaServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restPeliculaMockMvc = MockMvcBuilders.standaloneSetup(peliculaResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restPeliculaMockMvc.perform(get("/api/peliculas?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(peliculaServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllPeliculasWithEagerRelationshipsIsNotEnabled() throws Exception {
+        PeliculaResource peliculaResource = new PeliculaResource(peliculaServiceMock, peliculaQueryService);
+            when(peliculaServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restPeliculaMockMvc = MockMvcBuilders.standaloneSetup(peliculaResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restPeliculaMockMvc.perform(get("/api/peliculas?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(peliculaServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getPelicula() throws Exception {
@@ -393,6 +437,67 @@ public class PeliculaResourceIT {
         // Get all the peliculaList where enCines is null
         defaultPeliculaShouldNotBeFound("enCines.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllPeliculasByEstrenoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        peliculaRepository.saveAndFlush(pelicula);
+        Estreno estreno = EstrenoResourceIT.createEntity(em);
+        em.persist(estreno);
+        em.flush();
+        pelicula.setEstreno(estreno);
+        estreno.setPelicula(pelicula);
+        peliculaRepository.saveAndFlush(pelicula);
+        Long estrenoId = estreno.getId();
+
+        // Get all the peliculaList where estreno equals to estrenoId
+        defaultPeliculaShouldBeFound("estrenoId.equals=" + estrenoId);
+
+        // Get all the peliculaList where estreno equals to estrenoId + 1
+        defaultPeliculaShouldNotBeFound("estrenoId.equals=" + (estrenoId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPeliculasByDirectorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        peliculaRepository.saveAndFlush(pelicula);
+        Director director = DirectorResourceIT.createEntity(em);
+        em.persist(director);
+        em.flush();
+        pelicula.setDirector(director);
+        peliculaRepository.saveAndFlush(pelicula);
+        Long directorId = director.getId();
+
+        // Get all the peliculaList where director equals to directorId
+        defaultPeliculaShouldBeFound("directorId.equals=" + directorId);
+
+        // Get all the peliculaList where director equals to directorId + 1
+        defaultPeliculaShouldNotBeFound("directorId.equals=" + (directorId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPeliculasByActorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        peliculaRepository.saveAndFlush(pelicula);
+        Actor actor = ActorResourceIT.createEntity(em);
+        em.persist(actor);
+        em.flush();
+        pelicula.addActor(actor);
+        peliculaRepository.saveAndFlush(pelicula);
+        Long actorId = actor.getId();
+
+        // Get all the peliculaList where actor equals to actorId
+        defaultPeliculaShouldBeFound("actorId.equals=" + actorId);
+
+        // Get all the peliculaList where actor equals to actorId + 1
+        defaultPeliculaShouldNotBeFound("actorId.equals=" + (actorId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */

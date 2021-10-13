@@ -35,6 +35,12 @@ public class PeliculaCriteria implements Serializable, Criteria {
 
     private BooleanFilter enCines;
 
+    private LongFilter estrenoId;
+
+    private LongFilter directorId;
+
+    private LongFilter actorId;
+
     public PeliculaCriteria(){
     }
 
@@ -44,6 +50,9 @@ public class PeliculaCriteria implements Serializable, Criteria {
         this.fechaEstreno = other.fechaEstreno == null ? null : other.fechaEstreno.copy();
         this.descricion = other.descricion == null ? null : other.descricion.copy();
         this.enCines = other.enCines == null ? null : other.enCines.copy();
+        this.estrenoId = other.estrenoId == null ? null : other.estrenoId.copy();
+        this.directorId = other.directorId == null ? null : other.directorId.copy();
+        this.actorId = other.actorId == null ? null : other.actorId.copy();
     }
 
     @Override
@@ -91,6 +100,30 @@ public class PeliculaCriteria implements Serializable, Criteria {
         this.enCines = enCines;
     }
 
+    public LongFilter getEstrenoId() {
+        return estrenoId;
+    }
+
+    public void setEstrenoId(LongFilter estrenoId) {
+        this.estrenoId = estrenoId;
+    }
+
+    public LongFilter getDirectorId() {
+        return directorId;
+    }
+
+    public void setDirectorId(LongFilter directorId) {
+        this.directorId = directorId;
+    }
+
+    public LongFilter getActorId() {
+        return actorId;
+    }
+
+    public void setActorId(LongFilter actorId) {
+        this.actorId = actorId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -106,7 +139,10 @@ public class PeliculaCriteria implements Serializable, Criteria {
             Objects.equals(titulo, that.titulo) &&
             Objects.equals(fechaEstreno, that.fechaEstreno) &&
             Objects.equals(descricion, that.descricion) &&
-            Objects.equals(enCines, that.enCines);
+            Objects.equals(enCines, that.enCines) &&
+            Objects.equals(estrenoId, that.estrenoId) &&
+            Objects.equals(directorId, that.directorId) &&
+            Objects.equals(actorId, that.actorId);
     }
 
     @Override
@@ -116,7 +152,10 @@ public class PeliculaCriteria implements Serializable, Criteria {
         titulo,
         fechaEstreno,
         descricion,
-        enCines
+        enCines,
+        estrenoId,
+        directorId,
+        actorId
         );
     }
 
@@ -128,6 +167,9 @@ public class PeliculaCriteria implements Serializable, Criteria {
                 (fechaEstreno != null ? "fechaEstreno=" + fechaEstreno + ", " : "") +
                 (descricion != null ? "descricion=" + descricion + ", " : "") +
                 (enCines != null ? "enCines=" + enCines + ", " : "") +
+                (estrenoId != null ? "estrenoId=" + estrenoId + ", " : "") +
+                (directorId != null ? "directorId=" + directorId + ", " : "") +
+                (actorId != null ? "actorId=" + actorId + ", " : "") +
             "}";
     }
 

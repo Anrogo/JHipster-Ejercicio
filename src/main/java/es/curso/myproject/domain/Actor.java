@@ -1,4 +1,5 @@
 package es.curso.myproject.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -11,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A Director.
+ * A Actor.
  */
 @Entity
-@Table(name = "director")
+@Table(name = "actor")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "director")
-public class Director implements Serializable {
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "actor")
+public class Actor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,17 +27,17 @@ public class Director implements Serializable {
     @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
-    @NotNull
-    @Size(min = 3, max = 50)
-    @Column(name = "nombre", length = 50, nullable = false)
+    @Size(min = 3, max = 40)
+    @Column(name = "nombre", length = 40)
     private String nombre;
 
     @Size(min = 3, max = 70)
     @Column(name = "apellidos", length = 70)
     private String apellidos;
 
-    @OneToMany(mappedBy = "director")
+    @ManyToMany(mappedBy = "actors")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set<Pelicula> peliculas = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -52,7 +53,7 @@ public class Director implements Serializable {
         return nombre;
     }
 
-    public Director nombre(String nombre) {
+    public Actor nombre(String nombre) {
         this.nombre = nombre;
         return this;
     }
@@ -65,7 +66,7 @@ public class Director implements Serializable {
         return apellidos;
     }
 
-    public Director apellidos(String apellidos) {
+    public Actor apellidos(String apellidos) {
         this.apellidos = apellidos;
         return this;
     }
@@ -78,20 +79,20 @@ public class Director implements Serializable {
         return peliculas;
     }
 
-    public Director peliculas(Set<Pelicula> peliculas) {
+    public Actor peliculas(Set<Pelicula> peliculas) {
         this.peliculas = peliculas;
         return this;
     }
 
-    public Director addPelicula(Pelicula pelicula) {
+    public Actor addPelicula(Pelicula pelicula) {
         this.peliculas.add(pelicula);
-        pelicula.setDirector(this);
+        pelicula.getActors().add(this);
         return this;
     }
 
-    public Director removePelicula(Pelicula pelicula) {
+    public Actor removePelicula(Pelicula pelicula) {
         this.peliculas.remove(pelicula);
-        pelicula.setDirector(null);
+        pelicula.getActors().remove(this);
         return this;
     }
 
@@ -105,10 +106,10 @@ public class Director implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Director)) {
+        if (!(o instanceof Actor)) {
             return false;
         }
-        return id != null && id.equals(((Director) o).id);
+        return id != null && id.equals(((Actor) o).id);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class Director implements Serializable {
 
     @Override
     public String toString() {
-        return "Director{" +
+        return "Actor{" +
             "id=" + getId() +
             ", nombre='" + getNombre() + "'" +
             ", apellidos='" + getApellidos() + "'" +

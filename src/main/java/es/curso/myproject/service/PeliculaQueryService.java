@@ -101,6 +101,18 @@ public class PeliculaQueryService extends QueryService<Pelicula> {
             if (criteria.getEnCines() != null) {
                 specification = specification.and(buildSpecification(criteria.getEnCines(), Pelicula_.enCines));
             }
+            if (criteria.getEstrenoId() != null) {
+                specification = specification.and(buildSpecification(criteria.getEstrenoId(),
+                    root -> root.join(Pelicula_.estreno, JoinType.LEFT).get(Estreno_.id)));
+            }
+            if (criteria.getDirectorId() != null) {
+                specification = specification.and(buildSpecification(criteria.getDirectorId(),
+                    root -> root.join(Pelicula_.director, JoinType.LEFT).get(Director_.id)));
+            }
+            if (criteria.getActorId() != null) {
+                specification = specification.and(buildSpecification(criteria.getActorId(),
+                    root -> root.join(Pelicula_.actors, JoinType.LEFT).get(Actor_.id)));
+            }
         }
         return specification;
     }

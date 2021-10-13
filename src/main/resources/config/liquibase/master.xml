@@ -18,7 +18,9 @@
     <include file="config/liquibase/changelog/20211011121003_added_entity_Pelicula.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20211012153733_added_entity_Estreno.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20211012154236_added_entity_Director.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211013124745_added_entity_Actor.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20211012153733_added_entity_constraints_Estreno.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211011121003_added_entity_constraints_Pelicula.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

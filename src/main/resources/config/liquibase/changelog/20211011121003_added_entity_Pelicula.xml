@@ -28,6 +28,9 @@
             <column name="en_cines" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="director_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="pelicula" columnName="fecha_estreno" columnDataType="datetime"/>
@@ -35,6 +38,17 @@
 
     <changeSet id="20211011121003-1-relations" author="jhipster">
 
+        <createTable tableName="pelicula_actor">
+            <column name="actor_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pelicula_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="pelicula_id, actor_id" tableName="pelicula_actor"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 

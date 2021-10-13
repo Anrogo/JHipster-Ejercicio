@@ -32,6 +32,10 @@ public class Estreno implements Serializable {
     @Column(name = "lugar", length = 150)
     private String lugar;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Pelicula pelicula;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -65,6 +69,19 @@ public class Estreno implements Serializable {
 
     public void setLugar(String lugar) {
         this.lugar = lugar;
+    }
+
+    public Pelicula getPelicula() {
+        return pelicula;
+    }
+
+    public Estreno pelicula(Pelicula pelicula) {
+        this.pelicula = pelicula;
+        return this;
+    }
+
+    public void setPelicula(Pelicula pelicula) {
+        this.pelicula = pelicula;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

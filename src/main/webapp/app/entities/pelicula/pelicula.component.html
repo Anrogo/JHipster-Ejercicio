@@ -37,6 +37,7 @@
             <th jhiSortBy="fechaEstreno"><span>Fecha Estreno</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="descricion"><span>Descricion</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="enCines"><span>En Cines</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="director.nombre"><span>Director</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -47,6 +48,11 @@
                 <td>{{pelicula.fechaEstreno | date:'medium'}}</td>
                 <td>{{pelicula.descricion}}</td>
                 <td>{{pelicula.enCines}}</td>
+                <td>
+                    <div *ngIf="pelicula.director">
+                        <a [routerLink]="['/director', pelicula.director?.id, 'view' ]" >{{pelicula.director?.nombre}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

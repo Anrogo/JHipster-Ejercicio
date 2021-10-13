@@ -11,7 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -58,6 +61,29 @@ public class PeliculaService {
         return peliculaRepository.findAll(pageable);
     }
 
+    /**
+     * Get all the peliculas with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<Pelicula> findAllWithEagerRelationships(Pageable pageable) {
+        return peliculaRepository.findAllWithEagerRelationships(pageable);
+    }
+    
+
+
+    /**
+    *  Get all the peliculas where Estreno is {@code null}.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true) 
+    public List<Pelicula> findAllWhereEstrenoIsNull() {
+        log.debug("Request to get all peliculas where Estreno is null");
+        return StreamSupport
+            .stream(peliculaRepository.findAll().spliterator(), false)
+            .filter(pelicula -> pelicula.getEstreno() == null)
+            .collect(Collectors.toList());
+    }
 
     /**
      * Get one pelicula by id.
@@ -68,7 +94,7 @@ public class PeliculaService {
     @Transactional(readOnly = true)
     public Optional<Pelicula> findOne(Long id) {
         log.debug("Request to get Pelicula : {}", id);
-        return peliculaRepository.findById(id);
+        return peliculaRepository.findOneWithEagerRelationships(id);
     }
 
     /**

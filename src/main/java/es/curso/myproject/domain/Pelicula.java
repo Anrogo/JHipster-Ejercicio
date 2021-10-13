@@ -1,4 +1,6 @@
 package es.curso.myproject.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +10,8 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Pelicula.
@@ -39,6 +43,21 @@ public class Pelicula implements Serializable {
 
     @Column(name = "en_cines")
     private Boolean enCines;
+
+    @OneToOne(mappedBy = "pelicula")
+    @JsonIgnore
+    private Estreno estreno;
+
+    @ManyToOne
+    @JsonIgnoreProperties("peliculas")
+    private Director director;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "pelicula_actor",
+               joinColumns = @JoinColumn(name = "pelicula_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "actor_id", referencedColumnName = "id"))
+    private Set<Actor> actors = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -99,6 +118,57 @@ public class Pelicula implements Serializable {
 
     public void setEnCines(Boolean enCines) {
         this.enCines = enCines;
+    }
+
+    public Estreno getEstreno() {
+        return estreno;
+    }
+
+    public Pelicula estreno(Estreno estreno) {
+        this.estreno = estreno;
+        return this;
+    }
+
+    public void setEstreno(Estreno estreno) {
+        this.estreno = estreno;
+    }
+
+    public Director getDirector() {
+        return director;
+    }
+
+    public Pelicula director(Director director) {
+        this.director = director;
+        return this;
+    }
+
+    public void setDirector(Director director) {
+        this.director = director;
+    }
+
+    public Set<Actor> getActors() {
+        return actors;
+    }
+
+    public Pelicula actors(Set<Actor> actors) {
+        this.actors = actors;
+        return this;
+    }
+
+    public Pelicula addActor(Actor actor) {
+        this.actors.add(actor);
+        actor.getPeliculas().add(this);
+        return this;
+    }
+
+    public Pelicula removeActor(Actor actor) {
+        this.actors.remove(actor);
+        actor.getPeliculas().remove(this);
+        return this;
+    }
+
+    public void setActors(Set<Actor> actors) {
+        this.actors = actors;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

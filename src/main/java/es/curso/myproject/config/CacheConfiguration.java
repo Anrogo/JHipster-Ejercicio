@@ -46,6 +46,10 @@ public class CacheConfiguration {
             createCache(cm, es.curso.myproject.domain.Pelicula.class.getName());
             createCache(cm, es.curso.myproject.domain.Estreno.class.getName());
             createCache(cm, es.curso.myproject.domain.Director.class.getName());
+            createCache(cm, es.curso.myproject.domain.Director.class.getName() + ".peliculas");
+            createCache(cm, es.curso.myproject.domain.Actor.class.getName());
+            createCache(cm, es.curso.myproject.domain.Pelicula.class.getName() + ".actors");
+            createCache(cm, es.curso.myproject.domain.Actor.class.getName() + ".peliculas");
             // jhipster-needle-ehcache-add-entry
         };
     }

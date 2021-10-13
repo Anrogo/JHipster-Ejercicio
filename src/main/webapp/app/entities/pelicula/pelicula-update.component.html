@@ -55,6 +55,19 @@
                            formControlName="enCines"/>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_director">Director</label>
+                    <select class="form-control" id="field_director" name="director" formControlName="director">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="directorOption.id === editForm.get('director').value?.id ? editForm.get('director').value : directorOption" *ngFor="let directorOption of directors; trackBy: trackDirectorById">{{directorOption.nombre}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="field_actors">Actor</label>
+                    <select class="form-control" id="field_actors" multiple name="actors" formControlName="actors">
+                        <option [ngValue]="getSelected(editForm.get('actors').value, actorOption)" *ngFor="let actorOption of actors; trackBy: trackActorById">{{actorOption.nombre}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
